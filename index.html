@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header-container">
+        <h1 id="header">
+            Tasks
+        </h1>
+        <h2 id="sub-heading">
+            0 tasks remaining
+        </h2>
+    </div>
+
+    <div class="task-entry-container">
+        <div>
+            <input type="text" id="text-box" placeholder="Add a new task">
+        </div>
+        <div class="task-button-container">
+            <div>
+                <input type="date" id="due-date" name="due-date">
+                <button id="cancelButton">Cancel</button>
+                <button id="addTaskButton">Add Task</button>
+            </div>
+        </div>
+
+        <div class="todo-list-container">
+            <ul id="todo-list">
+
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

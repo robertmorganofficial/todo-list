@@ -1,0 +1,293 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg-color: #fcfcfc;
+  --text-primary: #111111;
+  --text-secondary: #737373; /* Neutral gray */
+  --input-bg: #ffffff;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-focus: 0 8px 16px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
+  --radius: 16px;
+  --font-family: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 6rem 2rem;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Header Section */
+.header-container {
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+#header {
+  font-size: 2.5rem; /* Large and clean */
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+#sub-heading {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Main Content Area */
+.task-entry-container {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* 
+ * Input Wrapper 
+ * Targeted via the direct child div of the container 
+ */
+.task-entry-container > div:first-child {
+  position: relative;
+  width: 100%;
+}
+
+/* Plus Icon using Pseudo-element on the wrapper */
+.task-entry-container > div:first-child::before {
+  content: "+";
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d4d4d4; /* Light cool gray */
+  font-size: 1.75rem;
+  font-weight: 300;
+  pointer-events: none; /* Let clicks pass through to input */
+  z-index: 10;
+  margin-top: -2px; /* Visual alignment fix */
+}
+
+/* The Input Field */
+#text-box {
+  width: 100%;
+  padding: 1.25rem 1.5rem 1.25rem 3.5rem; /* Left padding space for icon */
+  font-size: 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background-color: var(--input-bg);
+  box-shadow: var(--shadow-soft);
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  font-family: inherit;
+  font-weight: 400;
+}
+
+#text-box::placeholder {
+  color: #d4d4d4;
+  font-weight: 400;
+}
+
+#text-box:focus {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  transform: translateY(-2px);
+  border-color: rgba(0, 0, 0, 0.03);
+}
+
+/* 
+ * Controls (Date & Buttons)
+ * Hidden by default to match the "minimalist photo" look
+ * Revealed when user interacts (focus)
+ */
+.task-button-container {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  margin-top: 0;
+}
+
+/* Reveal on Focus */
+.task-entry-container:focus-within .task-button-container {
+  max-height: 100px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 1rem;
+}
+
+.task-button-container > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Date Input */
+#due-date {
+  margin-right: auto; /* Push to left */
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #eee;
+  background: transparent;
+  border-radius: 8px;
+  font-family: inherit;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#due-date:hover {
+  background: #f5f5f5;
+  color: var(--text-primary);
+}
+
+/* Buttons */
+button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+/* Cancel Button */
+button:nth-of-type(1) {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+button:nth-of-type(1):hover {
+  background: #f5f5f5;
+  color: var(--text-primary);
+}
+
+/* Add Task Button */
+button:nth-of-type(2) {
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+}
+
+button:nth-of-type(2):hover {
+  background: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:nth-of-type(2):active {
+  transform: translateY(0);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Task List Styling                                                          */
+/* -------------------------------------------------------------------------- */
+
+.todo-list-container {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+#todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#todo-list li {
+  position: relative;
+  padding: 1rem 1rem 1rem 3.5rem; /* Left padding makes space for the circle */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 2px 4px rgba(0, 0, 0, 0.01); /* Very subtle card effect */
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  align-items: center;
+  cursor: default;
+  border: 1px solid transparent;
+}
+
+#todo-list li:hover {
+  background-color: #ffffff;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+  transform: translateY(-1px);
+}
+
+/* 
+ * Circular Checkbox 
+ * Created using ::before pseudo-element
+ */
+#todo-list li::before {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e5e5e5;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/* Hover effect on checkbox to indicate interactivity */
+#todo-list li:hover::before {
+  border-color: #d4d4d4;
+  background-color: #fafafa;
+}
+
+/* Active/Focus state for checkbox (simulated) */
+#todo-list li:active::before {
+  background-color: #f0f0f0;
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  body {
+    padding: 4rem 1.5rem;
+  }
+
+  #header {
+    font-size: 2rem;
+  }
+}
+
+#todo-list li div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+#todo-list li div span:last-child {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
