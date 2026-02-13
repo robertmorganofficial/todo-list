@@ -1,293 +1,340 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
 
 :root {
-  --bg-color: #fcfcfc;
-  --text-primary: #111111;
-  --text-secondary: #737373; /* Neutral gray */
-  --input-bg: #ffffff;
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-focus: 0 8px 16px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
-  --radius: 16px;
-  --font-family: "Inter", sans-serif;
+    --paper-color: #fcfbf5;
+    --line-color: #a8b8c8;
+    --margin-color: #ffcccc;
+    --ink-color: #333333;
+    --pencil-gray: #555555;
+    --highlight-blue: #0077cc;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 6rem 2rem;
-  font-family: var(--font-family);
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+    background-color: #e3d3b6; /* Wood desk color */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    font-family: 'Kalam', cursive;
+    color: var(--ink-color);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+    margin: 0;
 }
 
-/* Header Section */
-.header-container {
-  width: 100%;
-  max-width: 640px;
-  margin-bottom: 2.5rem;
-  text-align: left;
+/* Notebook Page Container */
+/* The HTML structure is: 
+   body -> .header-container, .task-entry-container 
+   Wait, looking at index.html, they are separate siblings in body.
+   I need to wrap them visually. 
+   Since I can't change HTML, I'll rely on a max-width on the body or wrap them using a common style.
+   But wait, if they are siblings, I want them to appear ON the same paper.
+*/
+
+body {
+    flex-direction: column;
+    align-items: center;
 }
+
+/* Simulate the single sheet of paper by styling a container. 
+   However, the content is split between .header-container and .task-entry-container.
+   I will style the *body* as the desk, and I need a "paper" constraint.
+   Since I can't add a wrapper div, I will style the distinct containers to look like they are part of one flow,
+   OR I can style the 'body' relative to a fixed width content area?
+   
+   Actually, a better approach given the HTML constraints:
+   Make the body the desk.
+   Make both .header-container and .task-entry-container have the same max-width and background,
+   effectively merging them visually.
+*/
+
+.header-container,
+.task-entry-container {
+    width: 100%;
+    max-width: 500px;
+    background-color: var(--paper-color);
+    /* Lined Paper Pattern */
+    background-image: 
+        linear-gradient(90deg, transparent 55px, var(--margin-color) 56px, transparent 57px),
+        repeating-linear-gradient(transparent, transparent 29px, var(--line-color) 30px);
+    background-attachment: local;
+    padding-left: 70px; /* Space for margin */
+    padding-right: 20px;
+    position: relative;
+}
+
+.header-container {
+    padding-top: 60px; /* Space for spirals */
+    border-radius: 10px 10px 0 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    z-index: 2;
+    /* Shadow only on top and sides, not bottom */
+    box-shadow: 5px -5px 10px rgba(0,0,0,0.1); 
+}
+
+.task-entry-container {
+    padding-top: 0;
+    padding-bottom: 30px;
+    border-radius: 0 0 10px 10px;
+    margin-top: 0;
+    min-height: 500px;
+    /* Shadow on bottom and sides */
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+}
+
+/* Spiral Binding Effect on the Header */
+.header-container::before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 10;
+    
+    /* Simpler Spiral Binding: Gray rounded wires and holes */
+    background-image: 
+        /* The Wire: Gray curves */
+        linear-gradient(to bottom, #d0d0d0 0%, #888888 50%, #d0d0d0 100%),
+        /* The Holes: Dark circles */
+        radial-gradient(circle at center, #333333 40%, transparent 45%);
+    
+    /* Size and position of one spiral unit */
+    background-size: 15px 50px, 20px 20px;
+    background-position: top left, bottom left;
+    background-repeat: repeat-x;
+    
+    /* Adjustments to align wire and hole */
+    background-position-x: 12px, 10px;
+    background-position-y: 0px, 35px;
+    
+    /* Gap between spirals */
+    background-size: 40px 40px, 40px 15px; 
+    
+    /* Correction for the single-line syntax above: split for clarity */
+    background: 
+        /* Wire loop (vertical gradient strip) */
+        linear-gradient(to right, transparent 15px, #bbb 15px, #f0f0f0 20px, #999 25px, transparent 25px) 0 0 / 40px 40px,
+        /* Punch hole */
+        radial-gradient(circle at 20px 35px, #222 5px, transparent 6px) 0 0 / 40px 40px;
+        
+    background-repeat: repeat-x;
+}
+
+/* Remove unused experimental pseudo-element */
+.header-container::after {
+    display: none;
+}
+
+
+/* Layout Handling */
+
+/* Layout Handling */
 
 #header {
-  font-size: 2.5rem; /* Large and clean */
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  margin: 0 0 0.5rem 0;
-  color: var(--text-primary);
+    font-size: 3rem;
+    line-height: 60px; /* Occupy exactly 2 lines */
+    text-align: center;
+    margin: 0 0 30px 0; /* 1 line gap */
+    padding-top: 30px; /* Start lower */
+    font-weight: 700;
+    transform: rotate(-2deg);
 }
 
 #sub-heading {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--text-secondary);
-  margin: 0;
+    font-size: 1.5rem;
+    line-height: 30px; /* 1 line */
+    text-align: center;
+    color: var(--pencil-gray);
+    margin: 0 0 30px 0; /* 1 line gap */
+    font-weight: 300;
 }
 
-/* Main Content Area */
-.task-entry-container {
-  width: 100%;
-  max-width: 640px;
+/* Inputs */
+input[type="text"],
+input[type="date"] {
+    position: relative;
+    width: 100%;
+    height: 30px; /* Match line height */
+    padding: 0 5px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px dashed #888;
+    font-family: 'Kalam', cursive;
+    font-size: 1.2rem;
+    line-height: 30px;
+    margin: 0 0 28px 0; /* 2px for border */
+    outline: none;
+    vertical-align: bottom;
+    cursor: text;
 }
 
-/* 
- * Input Wrapper 
- * Targeted via the direct child div of the container 
- */
-.task-entry-container > div:first-child {
-  position: relative;
-  width: 100%;
+input[type="text"] {
+    color: var(--ink-color);
 }
 
-/* Plus Icon using Pseudo-element on the wrapper */
-.task-entry-container > div:first-child::before {
-  content: "+";
-  position: absolute;
-  left: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #d4d4d4; /* Light cool gray */
-  font-size: 1.75rem;
-  font-weight: 300;
-  pointer-events: none; /* Let clicks pass through to input */
-  z-index: 10;
-  margin-top: -2px; /* Visual alignment fix */
+input[type="text"]::placeholder {
+    color: #999;
+    font-style: italic;
+    line-height: 30px;
 }
 
-/* The Input Field */
-#text-box {
-  width: 100%;
-  padding: 1.25rem 1.5rem 1.25rem 3.5rem; /* Left padding space for icon */
-  font-size: 1.1rem;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  background-color: var(--input-bg);
-  box-shadow: var(--shadow-soft);
-  color: var(--text-primary);
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  font-family: inherit;
-  font-weight: 400;
+input[type="date"] {
+    color: transparent; /* Hide mm/dd/yyyy */
 }
 
-#text-box::placeholder {
-  color: #d4d4d4;
-  font-weight: 400;
+/* Pseudo-placeholder for Due Date */
+input[type="date"]::before {
+    content: "Due date";
+    position: absolute;
+    left: 5px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: #999; /* Placeholder color */
+    pointer-events: none; /* Allow clicking through */
+    font-style: italic;
+    display: block;
 }
 
-#text-box:focus {
-  outline: none;
-  box-shadow: var(--shadow-focus);
-  transform: translateY(-2px);
-  border-color: rgba(0, 0, 0, 0.03);
+/* Show real value on focus or interaction */
+input[type="date"]:focus {
+    color: var(--ink-color);
+    border-bottom: 2px solid var(--ink-color);
 }
 
-/* 
- * Controls (Date & Buttons)
- * Hidden by default to match the "minimalist photo" look
- * Revealed when user interacts (focus)
- */
+input[type="date"]:focus::before {
+    display: none;
+}
+
+/* If the browser doesn't support input::before, we might fall back to container styling, 
+   but this works in most modern WebKit/Blink browsers for this visual hack. */
+
+input:focus {
+    border-bottom: 2px solid var(--ink-color);
+}
+
+/* Button Container */
 .task-button-container {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  margin-top: 0;
+    height: auto; /* Allow expansion for stacked elements */
+    margin-bottom: 30px;
 }
 
-/* Reveal on Focus */
-.task-entry-container:focus-within .task-button-container {
-  max-height: 100px;
-  opacity: 1;
-  transform: translateY(0);
-  margin-top: 1rem;
-}
+.task-button-container div {
+    display: flex;
+    flex-wrap: wrap; /* Allow due date to break to new line */
+    gap: 0 10px; /* Only horizontal gap for buttons; vertical spacing handled by margins */
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+}   
 
-.task-button-container > div {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
-/* Date Input */
-#due-date {
-  margin-right: auto; /* Push to left */
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #eee;
-  background: transparent;
-  border-radius: 8px;
-  font-family: inherit;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-#due-date:hover {
-  background: #f5f5f5;
-  color: var(--text-primary);
-}
 
 /* Buttons */
 button {
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s;
+    font-family: 'Kalam', cursive;
+    font-size: 1.1rem;
+    padding: 0 16px; /* Use line-height for vertical centering */
+    background-color: transparent;
+    border: 2px solid var(--ink-color);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    line-height: 26px; /* 30px total height with 2px borders */
+    height: 30px; /* Force to perfectly match line height */
+    width: 140px; /* Equal width for both buttons */
+    text-align: center;
 }
 
-/* Cancel Button */
-button:nth-of-type(1) {
-  background: transparent;
-  color: var(--text-secondary);
+button:hover {
+    transform: scale(1.05) rotate(-1deg);
+    background-color: rgba(0,0,0,0.02);
 }
 
-button:nth-of-type(1):hover {
-  background: #f5f5f5;
-  color: var(--text-primary);
+button:active {
+    transform: scale(0.95);
 }
 
-/* Add Task Button */
-button:nth-of-type(2) {
-  background: #111;
-  color: #fff;
-  font-weight: 600;
+#addTaskButton {
+    border-color: var(--highlight-blue);
+    color: var(--highlight-blue);
+    font-weight: bold;
 }
 
-button:nth-of-type(2):hover {
-  background: #333;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+#cancelButton {
+     border-color: #d9534f;
+     color: #d9534f;
 }
 
-button:nth-of-type(2):active {
-  transform: translateY(0);
+/* Task List */
+ul#todo-list {
+    list-style: none; 
+    padding: 0;
+    margin: 30px 0 0 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Task List Styling                                                          */
-/* -------------------------------------------------------------------------- */
-
-.todo-list-container {
-  width: 100%;
-  margin-top: 2rem;
+li {
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 0; 
+    /* Strictly align with 30px grid */
+    height: auto;
+    min-height: 30px;
+    line-height: 30px; 
+    font-size: 1.4rem; /* Slightly larger for handwriting feel */
+    display: flex; /* Helps with alignment */
+    align-items: baseline;
 }
 
-#todo-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* Custom Checkbox (Visual Only) */
+li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px; /* Visual tweak to center in the line gap */
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--ink-color);
+    border-radius: 3px 6px 4px 7px / 6px 4px 7px 3px;
+    transition: all 0.2s;
 }
 
-#todo-list li {
-  position: relative;
-  padding: 1rem 1rem 1rem 3.5rem; /* Left padding makes space for the circle */
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.02),
-    0 2px 4px rgba(0, 0, 0, 0.01); /* Very subtle card effect */
-  color: var(--text-primary);
-  font-size: 1rem;
-  line-height: 1.5;
-  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-  display: flex;
-  align-items: center;
-  cursor: default;
-  border: 1px solid transparent;
+li:hover::before {
+    background-color: rgba(0,0,0,0.05);
 }
 
-#todo-list li:hover {
-  background-color: #ffffff;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.02);
-  transform: translateY(-1px);
+li:hover::after {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: -4px;
+    font-size: 1.5rem;
+    color: green;
+    opacity: 0.3;
 }
 
-/* 
- * Circular Checkbox 
- * Created using ::before pseudo-element
- */
-#todo-list li::before {
-  content: "";
-  position: absolute;
-  left: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
-  border: 2px solid #e5e5e5;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  background-color: transparent;
+/* Text Wrapper inside LI */
+li div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    width: 100%;
 }
 
-/* Hover effect on checkbox to indicate interactivity */
-#todo-list li:hover::before {
-  border-color: #d4d4d4;
-  background-color: #fafafa;
+/* Task Name */
+li div span:first-child {
+    font-weight: 700;
 }
 
-/* Active/Focus state for checkbox (simulated) */
-#todo-list li:active::before {
-  background-color: #f0f0f0;
-  transform: translateY(-50%) scale(0.95);
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-  body {
-    padding: 4rem 1.5rem;
-  }
-
-  #header {
-    font-size: 2rem;
-  }
-}
-
-#todo-list li div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-#todo-list li div span:last-child {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+/* Due Date */
+li div span:last-child {
+    font-size: 1rem;
+    color: var(--pencil-gray);
+    margin-left: auto; /* Push date to the right */
 }
