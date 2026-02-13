@@ -190,13 +190,14 @@ input[type="date"] {
 
 /* Pseudo-placeholder for Due Date */
 input[type="date"]::before {
-    content: "Due date";
+    content: "Due Date (Click the calendar icon to the right) → ";
     position: absolute;
     left: 5px;
     top: 0;
     width: 100%;
     height: 100%;
     color: #999; /* Placeholder color */
+    font-size: 0.9rem; /* Smaller to fit on one line */
     pointer-events: none; /* Allow clicking through */
     font-style: italic;
     display: block;
