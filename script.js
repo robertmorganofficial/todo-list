@@ -1,12 +1,3 @@
-/*
-Whent he button is pressed, we need to:
--capture the current task
--store that task in an array
--Gather the contents from that array and display them in an unordered list
--We need to create a task object to capture all the details needs such as task name and duedate
-*/
-
-
 const subHeading = document.getElementById("sub-heading");
 const textBox = document.getElementById("text-box");
 const dueDate = document.getElementById("due-date");
