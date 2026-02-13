@@ -25,7 +25,16 @@ function displayTask() {
 
         // Due date — second line, styled gray + smaller
         const dateSpan = document.createElement("span");
-        dateSpan.textContent = task.duedate;
+        if (task.duedate) {
+           const parts = task.duedate.split('-');
+           if(parts.length === 3) {
+               dateSpan.textContent = `${parts[1]}/${parts[2]}/${parts[0]}`;
+           } else {
+               dateSpan.textContent = task.duedate;
+           }
+        } else {
+            dateSpan.textContent = "";
+        }
 
          // Wrapper to stack them vertically
          const textWrapper = document.createElement("div");
