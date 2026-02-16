@@ -6,6 +6,10 @@ const addTaskButton = document.getElementById("addTaskButton");
 const todoList = document.getElementById("todo-list");
 const taskArray = [];
 
+
+
+
+
 function displayTask() {
     todoList.innerHTML = "";
     taskArray.forEach(task => {
@@ -17,30 +21,32 @@ function displayTask() {
         // Due date — second line, styled gray + smaller
         const dateSpan = document.createElement("span");
         if (task.duedate) {
-           const parts = task.duedate.split('-');
-           if(parts.length === 3) {
-               dateSpan.textContent = `${parts[1]}/${parts[2]}/${parts[0]}`;
-           } else {
-               dateSpan.textContent = task.duedate;
-           }
+            const parts = task.duedate.split('-');
+            if (parts.length === 3) {
+                dateSpan.textContent = `${parts[1]}/${parts[2]}/${parts[0]}`;
+            } else {
+                dateSpan.textContent = task.duedate;
+            }
         } else {
             dateSpan.textContent = "";
         }
 
-         // Wrapper to stack them vertically
-         const textWrapper = document.createElement("div");
-         textWrapper.appendChild(taskName);
-         textWrapper.appendChild(dateSpan);
+        // Wrapper to stack them vertically
+        const textWrapper = document.createElement("div");
+        textWrapper.appendChild(taskName);
+        textWrapper.appendChild(dateSpan);
 
-         li.appendChild(textWrapper);
-         todoList.appendChild(li);
+        li.appendChild(textWrapper);
+        todoList.appendChild(li);
+
+
     });
 
     const taskCount = taskArray.length;
-    if (taskCount === 1){
+    if (taskCount === 1) {
         subHeading.innerHTML = `${taskCount} task remaining`;
     }
-    else{
+    else {
         subHeading.innerHTML = `${taskCount} tasks remaining`;
     }
 }
@@ -52,7 +58,7 @@ addTaskButton.addEventListener("click", function (a) {
     const textValue = textBox.value;
     const dateValue = dueDate.value;
 
-    const fullTask ={
+    const fullTask = {
         task: textValue,
         duedate: dateValue
     }
@@ -61,6 +67,9 @@ addTaskButton.addEventListener("click", function (a) {
     displayTask()
     textBox.value = "";
     dueDate.value = "";
+    localStorage.setItem('tasks', JSON.stringify(taskArray));
+    const taskData = JSON.parse(localStorage.getItem('tasks'));
+    console.log(taskData);
 })
 
 cancelButton.addEventListener("click", function (b) {
