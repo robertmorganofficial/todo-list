@@ -6,7 +6,12 @@ const addTaskButton = document.getElementById("addTaskButton");
 const todoList = document.getElementById("todo-list");
 const taskArray = [];
 
-
+const saved = localStorage.getItem('tasks');
+if (saved) {
+    const parsed = JSON.parse(saved);
+    taskArray.push(...parsed);
+    displayTask();
+}
 
 
 
