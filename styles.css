@@ -365,3 +365,51 @@ li:has(.task-checkbox:checked) .task-name {
     text-decoration: line-through;
     opacity: 0.6;
 }
+
+/* Task Action Buttons Container */
+.task-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* Edit and Delete Icon Buttons */
+.edit-btn,
+.delete-btn {
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-btn img,
+.delete-btn img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.edit-btn:hover {
+    background-color: rgba(0, 119, 204, 0.1);
+    border-color: var(--highlight-blue);
+    transform: scale(1.1);
+}
+
+.delete-btn:hover {
+    background-color: rgba(217, 83, 79, 0.1);
+    border-color: #d9534f;
+    transform: scale(1.1);
+}
+
+.edit-btn:active,
+.delete-btn:active {
+    transform: scale(0.95);
+}
