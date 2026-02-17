@@ -4,6 +4,7 @@ const dueDate = document.getElementById("due-date");
 const cancelButton = document.getElementById("cancelButton");
 const addTaskButton = document.getElementById("addTaskButton");
 const todoList = document.getElementById("todo-list");
+const deleteButton = document.getElementById("delete-btn");
 const taskArray = [];
 
 const saved = localStorage.getItem('tasks');
@@ -19,7 +20,7 @@ function displayTask() {
     todoList.innerHTML = "";
     const template = document.getElementById("task-template");
     
-    taskArray.forEach(task => {
+    taskArray.forEach((task, index) => {
         // Clone the template
         const clone = template.content.cloneNode(true);
         
@@ -27,9 +28,11 @@ function displayTask() {
         const checkbox = clone.querySelector(".task-checkbox");
         const taskName = clone.querySelector(".task-name");
         const dateSpan = clone.querySelector(".task-date");
+        const deleteThis = clone.querySelector(".delete-btn");
         
         // Set the task name
         taskName.textContent = task.task;
+        deleteThis.dataset.index = index;
         
         // Format and set the due date
         if (task.duedate) {
@@ -77,7 +80,15 @@ addTaskButton.addEventListener("click", function (a) {
     console.log(taskData);
 })
 
-cancelButton.addEventListener("click", function (b) {
+todoList.addEventListener("click", function (b) {
     b.preventDefault();
-    console.log("The button works!");
+    const deleteBtn = b.target.closest(".delete-btn");
+    if (deleteBtn){
+        const index = deleteBtn.dataset.index;
+        taskArray.splice(index, 1);
+        localStorage.setItem('tasks', JSON.stringify(taskArray));
+        displayTask()
+        console.log(index);
+        console.log(taskArray);
+    }
 })
