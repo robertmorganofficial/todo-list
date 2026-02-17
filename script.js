@@ -17,14 +17,21 @@ if (saved) {
 
 function displayTask() {
     todoList.innerHTML = "";
+    const template = document.getElementById("task-template");
+    
     taskArray.forEach(task => {
-        const li = document.createElement("li");
-        //Task name - Top Line
-        const taskName = document.createElement("span");
-        taskName.textContent = task.task
-
-        // Due date — second line, styled gray + smaller
-        const dateSpan = document.createElement("span");
+        // Clone the template
+        const clone = template.content.cloneNode(true);
+        
+        // Get the elements from the cloned template
+        const checkbox = clone.querySelector(".task-checkbox");
+        const taskName = clone.querySelector(".task-name");
+        const dateSpan = clone.querySelector(".task-date");
+        
+        // Set the task name
+        taskName.textContent = task.task;
+        
+        // Format and set the due date
         if (task.duedate) {
             const parts = task.duedate.split('-');
             if (parts.length === 3) {
@@ -35,16 +42,9 @@ function displayTask() {
         } else {
             dateSpan.textContent = "";
         }
-
-        // Wrapper to stack them vertically
-        const textWrapper = document.createElement("div");
-        textWrapper.appendChild(taskName);
-        textWrapper.appendChild(dateSpan);
-
-        li.appendChild(textWrapper);
-        todoList.appendChild(li);
-
-
+        
+        // Append the cloned template to the list
+        todoList.appendChild(clone);
     });
 
     const taskCount = taskArray.length;

@@ -292,7 +292,6 @@ ul#todo-list {
 
 li {
     position: relative;
-    padding-left: 35px;
     margin-bottom: 0; 
     /* Strictly align with 30px grid */
     height: auto;
@@ -300,53 +299,69 @@ li {
     line-height: 30px; 
     font-size: 1.4rem; /* Slightly larger for handwriting feel */
     display: flex; /* Helps with alignment */
-    align-items: baseline;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Custom Checkbox (Visual Only) */
-li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 5px; /* Visual tweak to center in the line gap */
+/* Actual Checkbox Styling */
+.task-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
     width: 20px;
     height: 20px;
     border: 2px solid var(--ink-color);
-    border-radius: 3px 6px 4px 7px / 6px 4px 7px 3px;
+    border-radius: 3px 6px 4px 7px / 6px 4px 7px 3px; /* Hand-drawn look */
+    background-color: transparent;
+    cursor: pointer;
     transition: all 0.2s;
+    flex-shrink: 0;
+    margin: 0;
+    position: relative;
+    top: 0;
 }
 
-li:hover::before {
+.task-checkbox:hover {
     background-color: rgba(0,0,0,0.05);
 }
 
-li:hover::after {
-    content: "✓";
-    position: absolute;
-    left: 4px;
-    top: -4px;
-    font-size: 1.5rem;
-    color: green;
-    opacity: 0.3;
+.task-checkbox:checked {
+    background-color: var(--highlight-blue);
+    border-color: var(--highlight-blue);
 }
 
-/* Text Wrapper inside LI */
-li div {
+.task-checkbox:checked::after {
+    content: "✓";
+    position: absolute;
+    left: 2px;
+    top: -6px;
+    font-size: 1.5rem;
+    color: white;
+    font-weight: bold;
+}
+
+/* Task Content Wrapper inside LI */
+.task-content {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: 10px;
-    width: 100%;
+    flex: 1;
 }
 
 /* Task Name */
-li div span:first-child {
+.task-name {
     font-weight: 700;
 }
 
 /* Due Date */
-li div span:last-child {
+.task-date {
     font-size: 1rem;
     color: var(--pencil-gray);
     margin-left: auto; /* Push date to the right */
+}
+
+/* Strikethrough for completed tasks */
+li:has(.task-checkbox:checked) .task-name {
+    text-decoration: line-through;
+    opacity: 0.6;
 }
